@@ -2,8 +2,10 @@
 // Licensed under GPLv3
 
 import React from "react";
-import State from "../../State";
+
+import Alert from "../Alert";
 import PatchUtils from "../../PatchUtils";
+import State from "../../State";
 import Util from "../../Util";
 
 import "./index.css";
@@ -35,6 +37,8 @@ const handleExportPatches = () => {
 
   const $field = document.getElementById("Toolbar-json");
   $field.value = JSON.stringify(result);
+
+  Alert.flash("Patchlist exported");
 };
 
 const handleLoadPatches = () => {
@@ -48,6 +52,7 @@ const handleLoadPatches = () => {
         result: "Load OK",
         version: version
       });
+      Alert.flash("Patchlist loaded");
     }
   }
 };
@@ -55,8 +60,11 @@ const handleLoadPatches = () => {
 const renderBankAndPatchButtons = () =>
   PatchUtils.getVersion()
     ? [
-        <span className="Toolbar-label">Bank</span>,
+        <span className="Toolbar-label" key="Toolbar-bank">
+          Bank
+        </span>,
         <input
+          key="Toolbar-bank-field"
           className="Toolbar-field"
           name="bank"
           type="text"
@@ -64,8 +72,11 @@ const renderBankAndPatchButtons = () =>
           onChange={e => PatchUtils.setBank(e.target.value)}
           onKeyUp={handleBankKeyUp}
         />,
-        <span className="Toolbar-label">Patch</span>,
+        <span className="Toolbar-label" key="Toolbar-patch">
+          Patch
+        </span>,
         <input
+          key="Toolbar-patch-field"
           className="Toolbar-field"
           name="patch"
           type="text"
