@@ -8,7 +8,7 @@ import PatchUtils from "../../PatchUtils";
 import "./index.css";
 
 const renderPasteButton = () =>
-  PatchUtils.getCurrentPatch() ? (
+  PatchUtils.hasCurrentPatch() ? (
     <button
       className="PatchEditor-button"
       onClick={PatchUtils.pasteStoredToCurrentPatch}
@@ -19,6 +19,7 @@ const renderPasteButton = () =>
 
 const PatchEditor = props => (
   <div className="PatchEditor">
+    <h2 className="PatchEditor-title">Patch Details</h2>
     <div className="PatchEditor-toolbar">
       <button
         className="PatchEditor-button"
