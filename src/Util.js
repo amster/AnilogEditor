@@ -15,6 +15,9 @@ Util.isArrowRight = keycode => keycode === "ArrowRight";
 
 Util.isArrowUp = keycode => keycode === "ArrowUp";
 
+Util.isKey = (keycode, test) =>
+  String(keycode).toLowerCase() === String(test).toLowerCase();
+
 // Aliases
 Util.el = Util.getElementById;
 Util.key = Util.getKeyFromEvent;

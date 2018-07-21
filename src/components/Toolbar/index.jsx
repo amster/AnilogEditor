@@ -96,6 +96,14 @@ const renderExportPatchesButton = () =>
 
 const Toolbar = props => (
   <div className="Toolbar">
+    <div className="Toolbar-title">
+      <img
+        className="Toolbar-logo"
+        src="/logo-128.png"
+        alt="Anilog Editor logo"
+      />
+      <span className="Toolbar-title-label">Editor</span>
+    </div>
     <div className="Toolbar-controls">
       {renderBankAndPatchButtons()}
       {renderExportPatchesButton()}

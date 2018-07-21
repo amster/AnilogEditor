@@ -1,6 +1,7 @@
 // Copyright (c) 2018 by Sequence Mediaworks
 // Licensed under GPLv3
 
+import Alert from "./components/Alert/index";
 import G from "./Globals";
 import State from "./State";
 
@@ -15,7 +16,7 @@ PatchUtils.clearAllPatches = () => {
   }
 };
 
-PatchUtils.didLoadPatches = State.get("patchesversion") > 0;
+PatchUtils.didLoadPatches = () => State.get("patchesversion") > 0;
 
 PatchUtils.exportJsonFromState = () => {
   let result = {
@@ -87,6 +88,7 @@ PatchUtils.pasteStoredToCurrentPatch = () => {
   const patchObject = State.get("currentpatch");
   if (patchObject) {
     PatchUtils.setCurrentPatch(patchObject);
+    Alert.flash("Wrote stored patch");
     return true;
   } else {
     return false;
@@ -134,6 +136,7 @@ PatchUtils.storeCurrentPatch = () => {
   const patchObject = PatchUtils.getCurrentPatch();
   if (patchObject) {
     State.set("currentpatch", patchObject);
+    Alert.flash("Stored current patch");
     return true;
   } else {
     return false;

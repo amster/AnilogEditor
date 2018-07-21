@@ -36,7 +36,7 @@ const renderPasteButton = () =>
       className="PatchEditor-button"
       onClick={PatchUtils.pasteStoredToCurrentPatch}
     >
-      Paste patch
+      Write patch
     </button>
   ) : null;
 
