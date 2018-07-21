@@ -4,26 +4,36 @@
 import React from "react";
 import G from "../../Globals";
 import State from "../../State";
+import PatchUtils from "../../PatchUtils";
 
 import "./index.css";
 
+const getPatch = (bank, patch) => {
+  const patchId = PatchUtils.idWithPatch(bank, patch);
+  return State.get(patchId) || {};
+};
+
 const renderCols = (props, rowIdx) => {
   const onClick = (row, col) => {
-    State.set("bank", row);
-    State.set("patch", col);
+    State.set("bank", col);
+    State.set("patch", row);
   };
 
   let cols = [];
-  for (let col = 0; col < G.numberPatchesPerBank; col++) {
+  for (let col = 0; col < G.numberBanks; col++) {
     ((r, c) => {
       cols.push(
         <input
-          className="PatchList-radio"
-          type="radio"
-          name="PatchListSelector"
-          id={`bank:${rowIdx}/patch:${col}`}
-          checked={State.get("bank") == r && State.get("patch") == c}
+          className="PatchList-patchname"
+          type="text"
+          name="PatchList-patchname"
+          id={PatchUtils.idWithPatch(col, rowIdx)}
+          checked={State.get("bank") == c && State.get("patch") == r}
           onClick={e => onClick(r, c)}
+          value={getPatch(col, rowIdx).patchname}
+          handleChange={e => {
+            /* do nothing */
+          }}
         />
       );
     })(rowIdx, col);
@@ -42,8 +52,8 @@ const renderCols = (props, rowIdx) => {
 const renderColsHeadings = props => {
   let cols = [null];
 
-  for (let col = 0; col < G.numberPatchesPerBank; col++) {
-    cols.push(<span className="PatchList-col-heading">{col}</span>);
+  for (let col = 0; col < G.numberBanks; col++) {
+    cols.push(<span className="PatchList-col-heading">B{col}</span>);
   }
 
   return (
@@ -52,6 +62,7 @@ const renderColsHeadings = props => {
         <th
           className="PatchList-cell"
           key={`PatchList.renderColsHeading[${idx}]`}
+          scope="col"
         >
           {col}
         </th>
@@ -63,14 +74,14 @@ const renderColsHeadings = props => {
 const renderRows = props => {
   let rows = [];
 
-  for (let row = 0; row < G.numberBanks; row++) {
+  for (let row = 0; row < G.numberPatchesPerBank; row++) {
     rows.push(renderCols(props, row));
   }
 
   return rows.map((row, idx) => (
     <tr key={`PatchList.renderRows[${idx}]`}>
-      <th className="PatchList-cell">
-        <span className="PatchList-row-heading">b{idx}</span>
+      <th className="PatchList-cell" scope="row">
+        <span className="PatchList-row-heading">{idx}</span>
       </th>
       {row}
     </tr>
@@ -79,7 +90,6 @@ const renderRows = props => {
 
 const PatchList = props => (
   <div className="PatchList">
-    {console.log("PatchList", State.state)}
     <table className="PatchList-table">
       <tbody>
         {renderColsHeadings(props)}

@@ -3,6 +3,6 @@
 
 import React from "react";
 
-const PatchEditor = props => <div className="PatchEditor">x</div>;
+const PatchEditor = props => <div className="PatchEditor" />;
 
 export default PatchEditor;

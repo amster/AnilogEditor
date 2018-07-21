@@ -3,6 +3,7 @@
 
 import React, { Component } from "react";
 import State from "./State";
+import PatchUtils from "./PatchUtils";
 import "./App.css";
 
 import PatchEditor from "./components/PatchEditor/index";
@@ -16,6 +17,9 @@ class App extends Component {
 
     State.set("bank", 0);
     State.set("patch", 0);
+
+    PatchUtils.clearAllPatches();
+    console.log(State.state);
   }
 
   onChange(changedKey, changedValue) {
@@ -25,8 +29,8 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <PatchList />
         <Toolbar />
+        <PatchList />
         <PatchEditor />
       </div>
     );

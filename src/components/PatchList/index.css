@@ -3,17 +3,22 @@
 
 .PatchList-cell {
   padding: 0;
+  font-family: sans-serif;
 }
 
 .PatchList-col-heading {
-  font-size: 0.5em;
+  font-size: 0.75rem;
 }
 
-.PatchList-radio {
+.PatchList-patchname {
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  margin: 0;
+  font-family: sans-serif;
 }
 
 .PatchList-row-heading {
-  font-size: 0.5em;
+  font-size: 0.75rem;
 }
 
 .PatchList-table {
