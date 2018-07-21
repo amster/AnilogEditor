@@ -2,6 +2,7 @@
 // Licensed under GPLv3
 
 const Globals = {
+  alertDurationMs: 1000,
   numberBanks: 4,
   numberPatchesPerBank: 64
 };

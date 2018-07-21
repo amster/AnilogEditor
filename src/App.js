@@ -2,13 +2,15 @@
 // Licensed under GPLv3
 
 import React, { Component } from "react";
-import State from "./State";
-import PatchUtils from "./PatchUtils";
-import "./App.css";
 
+import Alert from "./components/Alert/index";
 import PatchEditor from "./components/PatchEditor/index";
 import PatchList from "./components/PatchList/index";
+import PatchUtils from "./PatchUtils";
+import State from "./State";
 import Toolbar from "./components/Toolbar/index";
+
+import "./App.css";
 
 class App extends Component {
   componentDidMount() {
@@ -46,6 +48,7 @@ class App extends Component {
         <Toolbar />
         <div className="App-instructions">{this.renderInstructions()}</div>
         {this.renderMainUI()}
+        <Alert />
       </div>
     );
   }
