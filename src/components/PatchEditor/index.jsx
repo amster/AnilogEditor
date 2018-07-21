@@ -7,6 +7,29 @@ import PatchUtils from "../../PatchUtils";
 
 import "./index.css";
 
+const renderCurrentPatch = patchObject => {
+  if (!patchObject || !patchObject.patchname) return null;
+
+  let rows = Object.keys(patchObject)
+    .sort()
+    .map(key => (
+      <tr key={`PatchEditor[${key}]`}>
+        <th scope="row" className="PatchEditor-cell">
+          {key}
+        </th>
+        <td className="PatchEditor-cell">
+          {renderPatchElement(key, patchObject[key])}
+        </td>
+      </tr>
+    ));
+
+  return (
+    <table>
+      <tbody>{rows}</tbody>
+    </table>
+  );
+};
+
 const renderPasteButton = () =>
   PatchUtils.hasCurrentPatch() ? (
     <button
@@ -16,6 +39,25 @@ const renderPasteButton = () =>
       Paste patch
     </button>
   ) : null;
+
+const renderPatchElement = (patchObjectKey, element) => {
+  if (element === null) return null;
+  if (typeof element !== "object") return element;
+
+  let cells = Object.keys(element)
+    .sort()
+    .map(key => (
+      <div
+        className="PatchEditor-elementItem"
+        key={`PatchEditor[${patchObjectKey}][${key}]`}
+      >
+        <span className="PatchEditor-elementLabel">{key}</span>
+        <span className="PatchEditor-elementValue">{element[key]}</span>
+      </div>
+    ));
+
+  return <div className="PatchEditor-elements">{cells}</div>;
+};
 
 const PatchEditor = props => (
   <div className="PatchEditor">
@@ -30,7 +72,7 @@ const PatchEditor = props => (
       {renderPasteButton()}
     </div>
     <div className="PatchEditor-objectView">
-      {JSON.stringify(PatchUtils.getCurrentPatch() || {}).replace(/,"/g, ', "')}
+      {renderCurrentPatch(PatchUtils.getCurrentPatch())}
     </div>
   </div>
 );

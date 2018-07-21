@@ -2,8 +2,8 @@
 /* Licensed under GPLv3 */
 
 .PatchEditor {
-  width: 36%;
-  padding: 2%;
+  width: 45%;
+  padding: 0 1rem;
   background: #eee;
   margin-left: 2%;
 }
@@ -20,8 +20,32 @@
   height: 1.5rem;
 }
 
+.PatchEditor-cell {
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid #aaa;
+}
+
+.PatchEditor-elementItem {
+  width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.PatchEditor-elementLabel {
+  font-weight: bold;
+}
+
+.PatchEditor-elements {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.PatchEditor-elementValue {
+  margin-left: 0.25rem;
+}
+
 .PatchEditor-objectView {
   margin-top: 2rem;
   font-size: 0.6rem;
-  font-family: monospace;
 }
