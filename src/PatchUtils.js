@@ -49,6 +49,8 @@ PatchUtils.getPatch = () => parseInt(State.get("patch"), 10) || 0;
 
 PatchUtils.getVersion = () => State.get("patchesversion") || 0;
 
+PatchUtils.hasCurrentPatch = () => !!State.get("currentpatch");
+
 PatchUtils.idWithPatch = (bank, patch) => `bank-${bank}_patch-${patch}`;
 
 PatchUtils.loadJsonToState = json => {
