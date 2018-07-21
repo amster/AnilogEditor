@@ -7,13 +7,27 @@ import PatchUtils from "../../PatchUtils";
 
 import "./index.css";
 
-const handleLoadPatches = e => {
+const handleExportPatches = () => {
+  const version = State.get("patchesversion");
+  if (!version) return;
+
+  const result = PatchUtils.exportJsonFromState();
+  result.version = version + 1;
+
+  const $field = document.getElementById("Toolbar-json");
+  $field.value = JSON.stringify(result);
+};
+
+const handleLoadPatches = () => {
   const $field = document.getElementById("Toolbar-json");
   const json = $field.value;
   if (json && json.length > 0) {
     const result = PatchUtils.loadJsonToState(json);
     if (result) {
-      $field.value = `{"result": "Load OK"}`;
+      $field.value = JSON.stringify({
+        result: "Load OK",
+        version: State.get("patchesversion")
+      });
     }
   }
 };
@@ -40,7 +54,9 @@ const Toolbar = props => (
       <button className="Toolbar-button" onClick={handleLoadPatches}>
         Load Patches From JSON
       </button>
-      <button className="Toolbar-button">Export Patches To JSON</button>
+      <button className="Toolbar-button" onClick={handleExportPatches}>
+        Export Patches To JSON
+      </button>
     </div>
     <textarea
       className="Toolbar-json"

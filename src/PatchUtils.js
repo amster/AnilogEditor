@@ -15,6 +15,27 @@ PatchUtils.clearAllPatches = () => {
   }
 };
 
+PatchUtils.exportJsonFromState = () => {
+  let result = {
+    editor: "Anilog Editor",
+    date: new Date().toString(),
+    version: State.get("patchesversion"),
+    patches: []
+  };
+
+  for (let bank = 0; bank < G.numberBanks; bank++) {
+    for (let patch = 0; patch < G.numberPatchesPerBank; patch++) {
+      const patchId = PatchUtils.idWithPatch(bank, patch);
+      const patchesObject = State.get(patchId);
+      if (patchesObject) {
+        result.patches.push(Object.assign({}, patchesObject));
+      }
+    }
+  }
+
+  return result;
+};
+
 PatchUtils.getBank = () => State.state.bank;
 
 PatchUtils.getCurrentPatch = () =>
@@ -44,7 +65,7 @@ PatchUtils.loadJsonToState = json => {
 
     parsedJson.patches.forEach(patch => PatchUtils.setPatchWithJson(patch));
 
-    PatchUtils.set(
+    State.set(
       "patchesversion",
       parsedJson.version ? parseInt(parsedJson.version, 10) : 0
     );
@@ -60,7 +81,6 @@ PatchUtils.pasteStoredToCurrentPatch = () => {
   const patchObject = State.get("currentpatch");
   if (patchObject) {
     PatchUtils.setCurrentPatch(patchObject);
-    console.log("RECALLING CURRENT PATCH:", patchObject);
     return true;
   } else {
     return false;
@@ -96,7 +116,6 @@ PatchUtils.storeCurrentPatch = () => {
   const patchObject = PatchUtils.getCurrentPatch();
   if (patchObject) {
     State.set("currentpatch", patchObject);
-    console.log("SETTING CURRENT PATCH:", patchObject);
     return true;
   } else {
     return false;
