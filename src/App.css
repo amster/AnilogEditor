@@ -3,6 +3,7 @@
 
 .App {
   text-align: center;
+  padding: 1rem;
 }
 
 .App-grid {
@@ -21,6 +22,10 @@
   height: 150px;
   padding: 20px;
   color: white;
+}
+
+.App-instructions {
+  padding: 1rem 0;
 }
 
 .App-title {

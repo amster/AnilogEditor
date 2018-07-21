@@ -19,21 +19,33 @@ class App extends Component {
     State.set("patch", 0);
 
     PatchUtils.clearAllPatches();
-    console.log(State.state);
   }
 
   onChange(changedKey, changedValue) {
     this.setState(State.state);
   }
 
+  renderInstructions() {
+    return PatchUtils.getVersion()
+      ? "Click a cell to select, press C to copy, press P to paste."
+      : "Paste patches JSON above and click Load Patches From JSON";
+  }
+
+  renderMainUI() {
+    return PatchUtils.getVersion() ? (
+      <div className="App-grid">
+        <PatchList />
+        <PatchEditor />
+      </div>
+    ) : null;
+  }
+
   render() {
     return (
       <div className="App">
         <Toolbar />
-        <div className="App-grid">
-          <PatchList />
-          <PatchEditor />
-        </div>
+        <div className="App-instructions">{this.renderInstructions()}</div>
+        {this.renderMainUI()}
       </div>
     );
   }
