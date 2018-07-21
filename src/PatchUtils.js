@@ -15,6 +15,8 @@ PatchUtils.clearAllPatches = () => {
   }
 };
 
+PatchUtils.didLoadPatches = State.get("patchesversion") > 0;
+
 PatchUtils.exportJsonFromState = () => {
   let result = {
     editor: "Anilog Editor",
@@ -36,14 +38,16 @@ PatchUtils.exportJsonFromState = () => {
   return result;
 };
 
-PatchUtils.getBank = () => State.state.bank;
+PatchUtils.getBank = () => parseInt(State.get("bank"), 10) || 0;
 
 PatchUtils.getCurrentPatch = () =>
   State.get(
     PatchUtils.idWithPatch(PatchUtils.getBank(), PatchUtils.getPatch())
   );
 
-PatchUtils.getPatch = () => State.state.patch;
+PatchUtils.getPatch = () => parseInt(State.get("patch"), 10) || 0;
+
+PatchUtils.getVersion = () => State.get("patchesversion") || 0;
 
 PatchUtils.idWithPatch = (bank, patch) => `bank-${bank}_patch-${patch}`;
 
@@ -87,6 +91,12 @@ PatchUtils.pasteStoredToCurrentPatch = () => {
   }
 };
 
+PatchUtils.setBank = bank =>
+  State.set(
+    "bank",
+    Math.min(Math.max(parseInt(bank, 10) || 0, 0), G.numberBanks - 1)
+  );
+
 PatchUtils.setCurrentPatch = patchObject => {
   const bank = PatchUtils.getBank();
   const patch = PatchUtils.getPatch();
@@ -95,6 +105,12 @@ PatchUtils.setCurrentPatch = patchObject => {
     Object.assign({}, patchObject, { program: patch, bank: bank })
   );
 };
+
+PatchUtils.setPatch = patch =>
+  State.set(
+    "patch",
+    Math.min(Math.max(parseInt(patch, 10) || 0, 0), G.numberPatchesPerBank - 1)
+  );
 
 PatchUtils.setPatchWithJson = patchJson => {
   const patch = parseInt(patchJson.program, 10);
