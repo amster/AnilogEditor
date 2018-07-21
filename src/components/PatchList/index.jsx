@@ -36,12 +36,10 @@ const renderCols = (props, rowIdx) => {
           type="text"
           name="PatchList-patchname"
           id={PatchUtils.idWithPatch(col, rowIdx)}
-          checked={State.get("bank") == c && State.get("patch") == r}
+          checked={State.get("bank") === c && State.get("patch") === r}
           onClick={e => onClick(r, c)}
-          value={getPatch(col, rowIdx).patchname}
-          handleChange={e => {
-            /* do nothing */
-          }}
+          onChange={e => (e.target.value = getPatch(c, r).patchname || "")}
+          value={getPatch(c, r).patchname}
         />
       );
     })(rowIdx, col);

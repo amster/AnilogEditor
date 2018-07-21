@@ -2,7 +2,6 @@
 // Licensed under GPLv3
 
 import React from "react";
-import State from "../../State";
 import PatchUtils from "../../PatchUtils";
 
 import "./index.css";
