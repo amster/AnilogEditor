@@ -44,6 +44,11 @@ PatchUtils.loadJsonToState = json => {
 
     parsedJson.patches.forEach(patch => PatchUtils.setPatchWithJson(patch));
 
+    PatchUtils.set(
+      "patchesversion",
+      parsedJson.version ? parseInt(parsedJson.version, 10) : 0
+    );
+
     return true;
   } catch (e) {
     console.log("Load JSON: invalid JSON");
@@ -62,11 +67,14 @@ PatchUtils.pasteStoredToCurrentPatch = () => {
   }
 };
 
-PatchUtils.setCurrentPatch = patchObject =>
+PatchUtils.setCurrentPatch = patchObject => {
+  const bank = PatchUtils.getBank();
+  const patch = PatchUtils.getPatch();
   State.set(
-    PatchUtils.idWithPatch(PatchUtils.getBank(), PatchUtils.getPatch()),
-    patchObject
+    PatchUtils.idWithPatch(bank, patch),
+    Object.assign({}, patchObject, { program: patch, bank: bank })
   );
+};
 
 PatchUtils.setPatchWithJson = patchJson => {
   const patch = parseInt(patchJson.program, 10);

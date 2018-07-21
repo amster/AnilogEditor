@@ -23,6 +23,9 @@ const PatchEditor = props => (
         Paste patch
       </button>
     </div>
+    <div className="PatchEditor-objectView">
+      {JSON.stringify(PatchUtils.getCurrentPatch() || {}).replace(/,"/g, ', "')}
+    </div>
   </div>
 );
 

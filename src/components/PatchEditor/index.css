@@ -19,3 +19,9 @@
   font-family: sans-serif;
   height: 1.5rem;
 }
+
+.PatchEditor-objectView {
+  margin-top: 2rem;
+  font-size: 0.6rem;
+  font-family: monospace;
+}
