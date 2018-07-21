@@ -11,7 +11,7 @@ import "./index.css";
 const editPatchname = () => {
   const patchObject = PatchUtils.getCurrentPatch();
   let newName = prompt("New patchname", patchObject.patchname);
-  if (!newName === null) return;
+  if (newName === null) return;
 
   newName = String(newName)
     .replace(/^\s*/, "")
