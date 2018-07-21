@@ -37,10 +37,10 @@ const Toolbar = props => (
         value={State.state.patch}
         onChange={e => State.set("patch", e.target.value)}
       />
-      <button className="PatchEditor-button" onClick={handleLoadPatches}>
+      <button className="Toolbar-button" onClick={handleLoadPatches}>
         Load Patches From JSON
       </button>
-      <button className="PatchEditor-button">Export Patches To JSON</button>
+      <button className="Toolbar-button">Export Patches To JSON</button>
     </div>
     <textarea
       className="Toolbar-json"

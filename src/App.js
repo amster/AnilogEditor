@@ -30,8 +30,10 @@ class App extends Component {
     return (
       <div className="App">
         <Toolbar />
-        <PatchList />
-        <PatchEditor />
+        <div className="App-grid">
+          <PatchList />
+          <PatchEditor />
+        </div>
       </div>
     );
   }

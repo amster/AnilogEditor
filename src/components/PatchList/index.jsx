@@ -19,12 +19,20 @@ const renderCols = (props, rowIdx) => {
     State.set("patch", row);
   };
 
+  const curBank = State.get("bank");
+  const curPatch = State.get("patch");
+
   let cols = [];
   for (let col = 0; col < G.numberBanks; col++) {
     ((r, c) => {
+      const classname =
+        "PatchList-patchname " +
+        (col === curBank && rowIdx === curPatch
+          ? "PatchList-currentPatch"
+          : "");
       cols.push(
         <input
-          className="PatchList-patchname"
+          className={classname}
           type="text"
           name="PatchList-patchname"
           id={PatchUtils.idWithPatch(col, rowIdx)}

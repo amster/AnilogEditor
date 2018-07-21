@@ -15,6 +15,15 @@ PatchUtils.clearAllPatches = () => {
   }
 };
 
+PatchUtils.getBank = () => State.state.bank;
+
+PatchUtils.getCurrentPatch = () =>
+  State.get(
+    PatchUtils.idWithPatch(PatchUtils.getBank(), PatchUtils.getPatch())
+  );
+
+PatchUtils.getPatch = () => State.state.patch;
+
 PatchUtils.idWithPatch = (bank, patch) => `bank-${bank}_patch-${patch}`;
 
 PatchUtils.loadJsonToState = json => {
@@ -42,6 +51,23 @@ PatchUtils.loadJsonToState = json => {
   }
 };
 
+PatchUtils.pasteStoredToCurrentPatch = () => {
+  const patchObject = State.get("currentpatch");
+  if (patchObject) {
+    PatchUtils.setCurrentPatch(patchObject);
+    console.log("RECALLING CURRENT PATCH:", patchObject);
+    return true;
+  } else {
+    return false;
+  }
+};
+
+PatchUtils.setCurrentPatch = patchObject =>
+  State.set(
+    PatchUtils.idWithPatch(PatchUtils.getBank(), PatchUtils.getPatch()),
+    patchObject
+  );
+
 PatchUtils.setPatchWithJson = patchJson => {
   const patch = parseInt(patchJson.program, 10);
   const bank = parseInt(patchJson.bank, 10);
@@ -55,6 +81,17 @@ PatchUtils.setPatchWithJson = patchJson => {
   ) {
     const patchId = PatchUtils.idWithPatch(bank, patch);
     State.set(patchId, patchJson);
+  }
+};
+
+PatchUtils.storeCurrentPatch = () => {
+  const patchObject = PatchUtils.getCurrentPatch();
+  if (patchObject) {
+    State.set("currentpatch", patchObject);
+    console.log("SETTING CURRENT PATCH:", patchObject);
+    return true;
+  } else {
+    return false;
   }
 };
 
