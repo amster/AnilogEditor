@@ -7,6 +7,7 @@ import classnames from "classnames";
 import G from "../../Globals";
 import State from "../../State";
 import PatchUtils from "../../PatchUtils";
+import Util from "../../Util";
 
 import "./index.css";
 
@@ -15,12 +16,35 @@ const getPatch = (bank, patch) => {
   return State.get(patchId) || {};
 };
 
-const renderCols = (props, rowIdx) => {
-  const onClick = (row, col) => {
-    State.set("bank", col);
-    State.set("patch", row);
-  };
+const handleCellClick = (bank, patch) => {
+  State.set("bank", bank);
+  State.set("patch", patch);
+};
 
+const handleCellKeyDown = (e, bank, patch) => {
+  const keycode = Util.key(e);
+
+  if (Util.isArrowLeft(keycode)) {
+    PatchUtils.setBank(PatchUtils.getBank() - 1);
+  } else if (Util.isArrowRight(keycode)) {
+    PatchUtils.setBank(PatchUtils.getBank() + 1);
+  } else if (Util.isArrowUp(keycode)) {
+    PatchUtils.setPatch(PatchUtils.getPatch() - 1);
+  } else if (Util.isArrowDown(keycode)) {
+    PatchUtils.setPatch(PatchUtils.getPatch() + 1);
+  }
+
+  const patchId = PatchUtils.idWithPatch(
+    PatchUtils.getBank(),
+    PatchUtils.getPatch()
+  );
+  const $el = Util.el(patchId);
+  if ($el) {
+    $el.focus();
+  }
+};
+
+const renderCols = (props, rowIdx) => {
   const curBank = State.get("bank");
   const curPatch = State.get("patch");
 
@@ -37,8 +61,9 @@ const renderCols = (props, rowIdx) => {
           name="PatchList-patchname"
           id={PatchUtils.idWithPatch(col, rowIdx)}
           checked={State.get("bank") === c && State.get("patch") === r}
-          onClick={e => onClick(r, c)}
+          onClick={e => handleCellClick(c, r)}
           onChange={e => (e.target.value = getPatch(c, r).patchname || "")}
+          onKeyDown={e => handleCellKeyDown(e, c, r)}
           value={getPatch(c, r).patchname}
         />
       );
@@ -96,6 +121,7 @@ const renderRows = props => {
 
 const PatchList = props => (
   <div className="PatchList">
+    <h2 className="PatchList-title">Patch List</h2>
     <table className="PatchList-table">
       <tbody>
         {renderColsHeadings(props)}
