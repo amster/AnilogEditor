@@ -34,6 +34,8 @@ const handleCellKeyDown = (e, bank, patch) => {
     PatchUtils.setPatch(PatchUtils.getPatch() + 1);
   } else if (Util.isKey(keycode, "c")) {
     PatchUtils.storeCurrentPatch();
+  } else if (Util.isKey(keycode, "v")) {
+    PatchUtils.pasteStoredToCurrentPatch();
   } else if (Util.isKey(keycode, "w")) {
     PatchUtils.pasteStoredToCurrentPatch();
   }

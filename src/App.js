@@ -29,7 +29,7 @@ class App extends Component {
 
   renderInstructions() {
     return PatchUtils.getVersion()
-      ? "Click a cell to select, press C to copy, press W to write."
+      ? "Click a cell to select, press C to copy, press W (or V) to write."
       : "Paste patches JSON above and click Load Patches From JSON";
   }
 
@@ -46,6 +46,14 @@ class App extends Component {
     return (
       <div className="App">
         <Toolbar />
+        <div className="App-importer">
+          <textarea
+            className="App-importer-field"
+            id="Patchlist-json"
+            value={State.get("patchJson")}
+            placeholder="Export the patches from the app and paste the JSON here."
+          />
+        </div>
         <div className="App-instructions">{this.renderInstructions()}</div>
         {this.renderMainUI()}
         <div className="App-footer">Copyright (c) 2018 Sequence Mediaworks</div>

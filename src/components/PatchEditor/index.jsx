@@ -3,15 +3,47 @@
 
 import React from "react";
 
+import G from "../../Globals";
 import PatchUtils from "../../PatchUtils";
 
 import "./index.css";
+
+const editPatchname = () => {
+  const patchObject = PatchUtils.getCurrentPatch();
+  let newName = prompt("New patchname", patchObject.patchname);
+  if (!newName === null) return;
+
+  newName = String(newName)
+    .replace(/^\s*/, "")
+    .replace(/\s*$/, "")
+    .replace(/\s+/g, " ")
+    .replace(
+      /./g,
+      match =>
+        match.charCodeAt(0) < 32 || match.charCodeAt(0) > 127 ? "_" : match
+    )
+    .substr(0, G.patchnameMaxLength);
+
+  patchObject.patchname = newName;
+  PatchUtils.setCurrentPatch(patchObject);
+};
+
+const patchObjectKeyComparator = (a, b) => {
+  const aHasNumbers = !!String(a).match(/\d/);
+  const bHasNumbers = !!String(b).match(/\d/);
+
+  if (!aHasNumbers && !bHasNumbers) return a.localeCompare(b);
+  if (!aHasNumbers && bHasNumbers) return -1;
+  if (aHasNumbers && !bHasNumbers) return 1;
+
+  return a.localeCompare(b);
+};
 
 const renderCurrentPatch = patchObject => {
   if (!patchObject || !patchObject.patchname) return null;
 
   let rows = Object.keys(patchObject)
-    .sort()
+    .sort(patchObjectKeyComparator)
     .map(key => (
       <tr key={`PatchEditor[${key}]`}>
         <th scope="row" className="PatchEditor-cell">
@@ -63,6 +95,9 @@ const PatchEditor = props => (
   <div className="PatchEditor">
     <h2 className="PatchEditor-title">Patch Details</h2>
     <div className="PatchEditor-toolbar">
+      <button className="PatchEditor-button" onClick={editPatchname}>
+        Edit patchname
+      </button>
       <button
         className="PatchEditor-button"
         onClick={PatchUtils.storeCurrentPatch}

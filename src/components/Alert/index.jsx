@@ -12,15 +12,17 @@ import "./index.css";
 const Alert = props => (
   <div
     className={classnames("Alert", {
-      "Alert--show": State.get("alertmessage")
+      "Alert--show": State.get("alertmessage"),
+      "Alert--error": State.get("alerttype") === "error"
     })}
   >
     {State.get("alertmessage")}
   </div>
 );
 
-Alert.flash = message => {
+Alert.flash = (message, isError) => {
   State.set("alertmessage", message);
+  State.set("alerttype", isError ? "error" : "message");
 
   if (Alert._timeout) {
     clearTimeout(Alert._timeout);

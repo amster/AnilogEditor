@@ -5,7 +5,6 @@ import React from "react";
 
 import Alert from "../Alert";
 import PatchUtils from "../../PatchUtils";
-import State from "../../State";
 import Util from "../../Util";
 
 import "./index.css";
@@ -35,14 +34,14 @@ const handleExportPatches = () => {
   const result = PatchUtils.exportJsonFromState();
   result.version = version + 1;
 
-  const $field = document.getElementById("Toolbar-json");
+  const $field = Util.el("Patchlist-json");
   $field.value = JSON.stringify(result);
 
   Alert.flash("Patchlist exported");
 };
 
 const handleLoadPatches = () => {
-  const $field = document.getElementById("Toolbar-json");
+  const $field = Util.el("Patchlist-json");
   const json = $field.value;
   if (json && json.length > 0) {
     const version = PatchUtils.getVersion();
@@ -53,6 +52,8 @@ const handleLoadPatches = () => {
         version: version
       });
       Alert.flash("Patchlist loaded");
+    } else {
+      Alert.flash("ERROR: Can't load this patchlist", true);
     }
   }
 };
@@ -111,11 +112,6 @@ const Toolbar = props => (
         Load Patches From JSON
       </button>
     </div>
-    <textarea
-      className="Toolbar-json"
-      id="Toolbar-json"
-      value={State.get("patchJson")}
-    />
   </div>
 );
 
