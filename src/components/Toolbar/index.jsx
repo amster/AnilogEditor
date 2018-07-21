@@ -10,7 +10,7 @@ import Util from "../../Util";
 
 import "./index.css";
 
-const handleBankKeyUp = e => {
+const handleBankKeyDown = e => {
   const keycode = Util.key(e);
   if (Util.isArrowUp(keycode)) {
     PatchUtils.setBank(PatchUtils.getBank() + 1);
@@ -19,7 +19,7 @@ const handleBankKeyUp = e => {
   }
 };
 
-const handlePatchKeyUp = e => {
+const handlePatchKeyDown = e => {
   const keycode = Util.key(e);
   if (Util.isArrowUp(keycode)) {
     PatchUtils.setPatch(PatchUtils.getPatch() + 1);
@@ -70,7 +70,7 @@ const renderBankAndPatchButtons = () =>
           type="text"
           value={PatchUtils.getBank()}
           onChange={e => PatchUtils.setBank(e.target.value)}
-          onKeyUp={handleBankKeyUp}
+          onKeyDown={handleBankKeyDown}
         />,
         <span className="Toolbar-label" key="Toolbar-patch">
           Patch
@@ -82,7 +82,7 @@ const renderBankAndPatchButtons = () =>
           type="text"
           value={PatchUtils.getPatch()}
           onChange={e => PatchUtils.setPatch(e.target.value)}
-          onKeyUp={handlePatchKeyUp}
+          onKeyDown={handlePatchKeyDown}
         />
       ]
     : null;
