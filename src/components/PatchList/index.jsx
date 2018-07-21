@@ -2,6 +2,8 @@
 // Licensed under GPLv3
 
 import React from "react";
+import classnames from "classnames";
+
 import G from "../../Globals";
 import State from "../../State";
 import PatchUtils from "../../PatchUtils";
@@ -25,11 +27,9 @@ const renderCols = (props, rowIdx) => {
   let cols = [];
   for (let col = 0; col < G.numberBanks; col++) {
     ((r, c) => {
-      const classname =
-        "PatchList-patchname " +
-        (col === curBank && rowIdx === curPatch
-          ? "PatchList-currentPatch"
-          : "");
+      const classname = classnames("PatchList-patchname", {
+        "PatchList-currentPatch": col === curBank && rowIdx === curPatch
+      });
       cols.push(
         <input
           className={classname}

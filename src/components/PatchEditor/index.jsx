@@ -2,6 +2,7 @@
 // Licensed under GPLv3
 
 import React from "react";
+
 import PatchUtils from "../../PatchUtils";
 
 import "./index.css";
