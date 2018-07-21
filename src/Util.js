@@ -3,12 +3,20 @@
 
 let Util = {};
 
-Util.getKeyFromEvent = e => e.key || e.keyIdentifier || e.keyCode;
+Util.getElementById = elementId => document.getElementById(elementId);
 
-Util.key = Util.getKeyFromEvent;
+Util.getKeyFromEvent = e => e.key || e.keyIdentifier || e.keyCode;
 
 Util.isArrowDown = keycode => keycode === "ArrowDown";
 
+Util.isArrowLeft = keycode => keycode === "ArrowLeft";
+
+Util.isArrowRight = keycode => keycode === "ArrowRight";
+
 Util.isArrowUp = keycode => keycode === "ArrowUp";
+
+// Aliases
+Util.el = Util.getElementById;
+Util.key = Util.getKeyFromEvent;
 
 export default Util;
