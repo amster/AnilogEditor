@@ -103,7 +103,9 @@ const Toolbar = props => (
         src="/logo-128.png"
         alt="Anilog Editor logo"
       />
-      <span className="Toolbar-title-label">Editor</span>
+      <span className="Toolbar-title-label" title="ANILOG Editor">
+        Editor
+      </span>
     </div>
     <div className="Toolbar-controls">
       {renderBankAndPatchButtons()}

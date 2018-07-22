@@ -1,4 +1,4 @@
-# Anilog Editor
+# ANILOG Editor
 
 This is a web-based editor for an app project.
 
