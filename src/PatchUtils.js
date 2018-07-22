@@ -137,6 +137,9 @@ PatchUtils.storeCurrentPatch = () => {
   if (patchObject) {
     State.set("currentpatch", patchObject);
     Alert.flash("Stored current patch");
+    window._patchObject = patchObject;
+    console.log("See window._patchObject:");
+    console.log(JSON.stringify(window._patchObject));
     return true;
   } else {
     return false;
