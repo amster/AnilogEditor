@@ -15,6 +15,8 @@ Util.isArrowRight = keycode => keycode === "ArrowRight";
 
 Util.isArrowUp = keycode => keycode === "ArrowUp";
 
+Util.isEnterKey = keycode => keycode === 13 || keycode === "Enter";
+
 Util.isKey = (keycode, test) =>
   String(keycode).toLowerCase() === String(test).toLowerCase();
 

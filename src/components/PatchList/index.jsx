@@ -6,6 +6,7 @@ import classnames from "classnames";
 
 import G from "../../Globals";
 import State from "../../State";
+import PatchEditor from "../PatchEditor/index";
 import PatchUtils from "../../PatchUtils";
 import Util from "../../Util";
 
@@ -38,6 +39,8 @@ const handleCellKeyDown = (e, bank, patch) => {
     PatchUtils.pasteStoredToCurrentPatch();
   } else if (Util.isKey(keycode, "w")) {
     PatchUtils.pasteStoredToCurrentPatch();
+  } else if (Util.isEnterKey(keycode)) {
+    PatchEditor.editPatchname();
   }
 
   const patchId = PatchUtils.idWithPatch(

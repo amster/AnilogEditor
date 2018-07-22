@@ -112,4 +112,6 @@ const PatchEditor = props => (
   </div>
 );
 
+PatchEditor.editPatchname = editPatchname;
+
 export default PatchEditor;
