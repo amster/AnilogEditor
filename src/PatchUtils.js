@@ -68,8 +68,6 @@ PatchUtils.loadJsonToState = json => {
       return false;
     }
 
-    PatchUtils.clearAllPatches();
-
     parsedJson.patches.forEach(patch => PatchUtils.setPatchWithJson(patch));
 
     State.set(
