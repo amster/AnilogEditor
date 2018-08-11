@@ -5,7 +5,8 @@ const Globals = {
   alertDurationMs: 1000,
   numberBanks: 8,
   numberPatchesPerBank: 32,
-  patchnameMaxLength: 30
+  patchnameMaxLength: 30,
+  userBankStartIndex: 4
 };
 
 export default Globals;

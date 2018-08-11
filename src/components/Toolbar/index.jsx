@@ -27,11 +27,11 @@ const handlePatchKeyDown = e => {
   }
 };
 
-const handleExportPatches = () => {
+const handleExportPatches = isUser => {
   if (!PatchUtils.didLoadPatches()) return;
 
   const version = PatchUtils.getVersion();
-  const result = PatchUtils.exportJsonFromState();
+  const result = PatchUtils.exportJsonFromState(isUser);
   result.version = version + 1;
 
   const $field = Util.el("Patchlist-json");
@@ -88,12 +88,25 @@ const renderBankAndPatchButtons = () =>
       ]
     : null;
 
-const renderExportPatchesButton = () =>
-  PatchUtils.getVersion() ? (
-    <button className="Toolbar-button" onClick={handleExportPatches}>
-      Export Patches To JSON
-    </button>
-  ) : null;
+const renderExportPatchesButtons = () =>
+  PatchUtils.getVersion()
+    ? [
+        <button
+          className="Toolbar-button"
+          onClick={() => handleExportPatches(0)}
+          key="export1"
+        >
+          Export Factory Banks 0-3 JSON
+        </button>,
+        <button
+          className="Toolbar-button"
+          onClick={() => handleExportPatches(1)}
+          key="export1"
+        >
+          Export User Banks 4-7 JSON
+        </button>
+      ]
+    : null;
 
 const Toolbar = props => (
   <div className="Toolbar">
@@ -109,7 +122,8 @@ const Toolbar = props => (
     </div>
     <div className="Toolbar-controls">
       {renderBankAndPatchButtons()}
-      {renderExportPatchesButton()}
+      {renderExportPatchesButtons()}
+      &nbsp;
       <button className="Toolbar-button" onClick={handleLoadPatches}>
         Load Patches From JSON
       </button>

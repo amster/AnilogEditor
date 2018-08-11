@@ -18,7 +18,7 @@ PatchUtils.clearAllPatches = () => {
 
 PatchUtils.didLoadPatches = () => State.get("patchesversion") > 0;
 
-PatchUtils.exportJsonFromState = () => {
+PatchUtils.exportJsonFromState = isUser => {
   let result = {
     editor: "Anilog Editor",
     date: new Date().toString(),
@@ -26,7 +26,9 @@ PatchUtils.exportJsonFromState = () => {
     patches: []
   };
 
-  for (let bank = 0; bank < G.numberBanks; bank++) {
+  let start = isUser ? G.userBankStartIndex : 0;
+  let stop = isUser ? G.numberBanks : G.userBankStartIndex;
+  for (let bank = start; bank < stop; bank++) {
     for (let patch = 0; patch < G.numberPatchesPerBank; patch++) {
       const patchId = PatchUtils.idWithPatch(bank, patch);
       const patchesObject = State.get(patchId);

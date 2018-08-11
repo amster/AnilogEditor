@@ -27,3 +27,7 @@
 
 .PatchList-table {
 }
+
+.PatchList-userPath {
+  border-style: dotted;
+}

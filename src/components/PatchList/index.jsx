@@ -61,7 +61,9 @@ const renderCols = (props, rowIdx) => {
   for (let col = 0; col < G.numberBanks; col++) {
     ((r, c) => {
       const classname = classnames("PatchList-patchname", {
-        "PatchList-currentPatch": col === curBank && rowIdx === curPatch
+        "PatchList-currentPatch": col === curBank && rowIdx === curPatch,
+        "PatchList-factoryPath": col < G.userBankStartIndex,
+        "PatchList-userPath": col >= G.userBankStartIndex
       });
       cols.push(
         <input
@@ -132,10 +134,15 @@ const PatchList = props => (
   <div className="PatchList">
     <h2 className="PatchList-title">Patch List</h2>
     <table className="PatchList-table">
-      <tbody>
+      <thead>
+        <tr>
+          <th />
+          <th colspan="4">Factory</th>
+          <th colspan="4">User</th>
+        </tr>
         {renderColsHeadings(props)}
-        {renderRows(props)}
-      </tbody>
+      </thead>
+      <tbody>{renderRows(props)}</tbody>
     </table>
   </div>
 );
