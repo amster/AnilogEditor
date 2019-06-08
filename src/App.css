@@ -3,7 +3,7 @@
 
 .App {
   text-align: center;
-  padding: 80px 0 0 0;
+  padding: 80px 0;
 }
 
 .App-footer {
@@ -13,9 +13,6 @@
 }
 
 .App-grid {
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
 }
 
 .App-instructions {
@@ -23,7 +20,7 @@
 }
 
 #Patchlist-json {
-  width: 50%;
+  width: 80%;
   font-size: 0.5rem;
   height: 3rem;
 }

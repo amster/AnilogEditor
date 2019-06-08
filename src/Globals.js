@@ -3,10 +3,10 @@
 
 const Globals = {
   alertDurationMs: 1000,
-  numberBanks: 8,
-  numberPatchesPerBank: 32,
+  numberBanks: 16,
+  numberPatchesPerBank: 16,
   patchnameMaxLength: 30,
-  userBankStartIndex: 4
+  userBankStartIndex: 8
 };
 
 export default Globals;

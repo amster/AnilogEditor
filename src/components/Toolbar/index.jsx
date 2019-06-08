@@ -96,14 +96,14 @@ const renderExportPatchesButtons = () =>
           onClick={() => handleExportPatches(0)}
           key="export1"
         >
-          Export Factory Banks 0-3 JSON
+          Export Factory Banks 0-7 JSON
         </button>,
         <button
           className="Toolbar-button"
           onClick={() => handleExportPatches(1)}
           key="export1"
         >
-          Export User Banks 4-7 JSON
+          Export User Banks 8-15 JSON
         </button>
       ]
     : null;

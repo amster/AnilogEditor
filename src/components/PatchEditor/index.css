@@ -2,10 +2,15 @@
 /* Licensed under GPLv3 */
 
 .PatchEditor {
-  width: 45%;
+  position: fixed;
+  top: 70px;
+  bottom: 0px;
+  right: 0px;
+  width: 200px;
   padding: 0 1rem;
   background: #eee;
   margin-left: 2%;
+  overflow: auto;
 }
 
 .PatchEditor-button {
