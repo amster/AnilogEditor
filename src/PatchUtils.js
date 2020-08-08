@@ -9,8 +9,8 @@ let PatchUtils = {};
 
 PatchUtils.clearAllPatches = () => {
   for (let bank = 0; bank < G.numberBanks; bank++) {
-    for (let patch = 0; patch < G.numberPatchesPerBank; patch++) {
-      const patchId = PatchUtils.idWithPatch(bank, patch);
+    for (let programNumber = 0; programNumber < G.numberProgramsPerBank; programNumber++) {
+      const patchId = PatchUtils.idWithPatch(bank, programNumber);
       State.set(patchId, null);
     }
   }
@@ -29,8 +29,8 @@ PatchUtils.exportJsonFromState = isUser => {
   let start = isUser ? G.userBankStartIndex : 0;
   let stop = isUser ? G.numberBanks : G.userBankStartIndex;
   for (let bank = start; bank < stop; bank++) {
-    for (let patch = 0; patch < G.numberPatchesPerBank; patch++) {
-      const patchId = PatchUtils.idWithPatch(bank, patch);
+    for (let programNumber = 0; programNumber < G.numberProgramsPerBank; programNumber++) {
+      const patchId = PatchUtils.idWithPatch(bank, programNumber);
       const patchesObject = State.get(patchId);
       if (patchesObject) {
         result.patches.push(Object.assign({}, patchesObject));
@@ -45,16 +45,20 @@ PatchUtils.getBank = () => parseInt(State.get("bank"), 10) || 0;
 
 PatchUtils.getCurrentPatch = () =>
   State.get(
-    PatchUtils.idWithPatch(PatchUtils.getBank(), PatchUtils.getPatch())
+    PatchUtils.idWithPatch(PatchUtils.getBank(), PatchUtils.getProgramNumber())
   );
 
-PatchUtils.getPatch = () => parseInt(State.get("patch"), 10) || 0;
+PatchUtils.getProgramNumber = () => parseInt(State.get("programNumber"), 10) || 0;
 
 PatchUtils.getVersion = () => State.get("patchesversion") || 0;
 
-PatchUtils.hasCurrentPatch = () => !!State.get("currentpatch");
+PatchUtils.hasCurrentPatch = () => !!State.get("currentPatch");
 
-PatchUtils.idWithPatch = (bank, patch) => `bank-${bank}_patch-${patch}`;
+PatchUtils.idWithPatch = (bank, programNumber) => `b${bank}-p${programNumber}`;
+
+PatchUtils.isValidBank = bank => bank >= 0 && bank < G.numberBanks;
+
+PatchUtils.isValidProgramNumber = programNumber => programNumber >= 0 && programNumber < G.numberProgramsPerBank;
 
 PatchUtils.loadJsonToState = json => {
   try {
@@ -85,7 +89,7 @@ PatchUtils.loadJsonToState = json => {
 };
 
 PatchUtils.pasteStoredToCurrentPatch = () => {
-  const patchObject = State.get("currentpatch");
+  const patchObject = State.get("currentPatch");
   if (patchObject) {
     PatchUtils.setCurrentPatch(patchObject);
     Alert.flash("Wrote stored patch");
@@ -103,7 +107,7 @@ PatchUtils.setBank = bank =>
 
 PatchUtils.setCurrentPatch = patchObject => {
   const bank = PatchUtils.getBank();
-  const patch = PatchUtils.getPatch();
+  const patch = PatchUtils.getProgramNumber();
   State.set(
     PatchUtils.idWithPatch(bank, patch),
     Object.assign({}, patchObject, { program: patch, bank: bank })
@@ -112,22 +116,22 @@ PatchUtils.setCurrentPatch = patchObject => {
 
 PatchUtils.setPatch = patch =>
   State.set(
-    "patch",
-    Math.min(Math.max(parseInt(patch, 10) || 0, 0), G.numberPatchesPerBank - 1)
+    "programNumber",
+    Math.min(Math.max(parseInt(patch, 10) || 0, 0), G.numberProgramsPerBank - 1)
   );
 
 PatchUtils.setPatchWithJson = patchJson => {
-  const patch = parseInt(patchJson.program, 10);
+  const programNumber = parseInt(patchJson.program, 10);
   const bank = parseInt(patchJson.bank, 10);
   if (
     patchJson.patchname &&
     patchJson.patchname.length > 0 &&
-    patch >= 0 &&
-    patch < G.numberPatchesPerBank &&
+    programNumber >= 0 &&
+    programNumber < G.numberProgramsPerBank &&
     bank >= 0 &&
     bank < G.numberBanks
   ) {
-    const patchId = PatchUtils.idWithPatch(bank, patch);
+    const patchId = PatchUtils.idWithPatch(bank, programNumber);
     State.set(patchId, patchJson);
   }
 };
@@ -135,7 +139,7 @@ PatchUtils.setPatchWithJson = patchJson => {
 PatchUtils.storeCurrentPatch = () => {
   const patchObject = PatchUtils.getCurrentPatch();
   if (patchObject) {
-    State.set("currentpatch", patchObject);
+    State.set("currentPatch", patchObject);
     Alert.flash("Stored current patch");
     window._patchObject = patchObject;
     console.log("See window._patchObject:");
@@ -144,6 +148,40 @@ PatchUtils.storeCurrentPatch = () => {
   } else {
     return false;
   }
+};
+
+PatchUtils.swapStoredPatch = () => {
+  const bank = PatchUtils.getBank();
+  const programNumber = PatchUtils.getProgramNumber();
+  const copiedPatch = State.get("currentPatch");
+  const copiedBank = copiedPatch ? copiedPatch['bank'] : -1;
+  const copiedProgramNumber = copiedPatch ? copiedPatch['program'] : -1;
+
+  let isValidBankAndProgramNumber =
+    PatchUtils.isValidBank(copiedBank) &&
+    PatchUtils.isValidProgramNumber(copiedProgramNumber) &&
+    PatchUtils.isValidBank(bank) &&
+    PatchUtils.isValidProgramNumber(programNumber);
+  if (!isValidBankAndProgramNumber) {
+    return;
+  }
+
+  let isSamePatch = bank === copiedBank && programNumber === copiedProgramNumber;
+  if (isSamePatch) {
+    return;
+  }
+
+  console.log(`swapStoredPatch: --- 1: ${copiedBank}.${copiedProgramNumber} <=> ${bank}.${programNumber}`);
+
+  // State.set("currentPatch", patchObject);
+  //   Alert.flash("Stored current patch");
+  //   window._patchObject = patchObject;
+  //   console.log("See window._patchObject:");
+  //   console.log(JSON.stringify(window._patchObject));
+  //   return true;
+  // } else {
+  //   return false;
+  // }
 };
 
 export default PatchUtils;

@@ -12,17 +12,17 @@ import Util from "../../Util";
 
 import "./index.css";
 
-const getPatch = (bank, patch) => {
-  const patchId = PatchUtils.idWithPatch(bank, patch);
+const getPatch = (bank, programNumber) => {
+  const patchId = PatchUtils.idWithPatch(bank, programNumber);
   return State.get(patchId) || {};
 };
 
-const handleCellClick = (bank, patch) => {
+const handleCellClick = (bank, programNumber) => {
   State.set("bank", bank);
-  State.set("patch", patch);
+  State.set("programNumber", programNumber);
 };
 
-const handleCellKeyDown = (e, bank, patch) => {
+const handleCellKeyDown = (e, bank, programNumber) => {
   const keycode = Util.key(e);
 
   if (Util.isArrowLeft(keycode)) {
@@ -30,11 +30,13 @@ const handleCellKeyDown = (e, bank, patch) => {
   } else if (Util.isArrowRight(keycode)) {
     PatchUtils.setBank(PatchUtils.getBank() + 1);
   } else if (Util.isArrowUp(keycode)) {
-    PatchUtils.setPatch(PatchUtils.getPatch() - 1);
+    PatchUtils.setPatch(PatchUtils.getProgramNumber() - 1);
   } else if (Util.isArrowDown(keycode)) {
-    PatchUtils.setPatch(PatchUtils.getPatch() + 1);
+    PatchUtils.setPatch(PatchUtils.getProgramNumber() + 1);
   } else if (Util.isKey(keycode, "c")) {
     PatchUtils.storeCurrentPatch();
+  } else if (Util.isKey(keycode, "s")) {
+    PatchUtils.swapStoredPatch();
   } else if (Util.isKey(keycode, "v")) {
     PatchUtils.pasteStoredToCurrentPatch();
   } else if (Util.isKey(keycode, "w")) {
@@ -45,7 +47,7 @@ const handleCellKeyDown = (e, bank, patch) => {
 
   const patchId = PatchUtils.idWithPatch(
     PatchUtils.getBank(),
-    PatchUtils.getPatch()
+    PatchUtils.getProgramNumber()
   );
   const $el = Util.el(patchId);
   if ($el) {
@@ -55,15 +57,21 @@ const handleCellKeyDown = (e, bank, patch) => {
 
 const renderCols = (props, rowIdx) => {
   const curBank = State.get("bank");
-  const curPatch = State.get("patch");
+  const curProgramNumber = State.get("programNumber");
+  const copiedPatch = State.get("currentPatch");
+  const copiedBank = copiedPatch ? copiedPatch['bank'] : -1;
+  const copiedProgramNumber = copiedPatch ? copiedPatch['program'] : -1;
+
+  console.log(`renderCols: ${copiedBank}.${copiedProgramNumber}`);
 
   let cols = [];
   for (let col = 0; col < G.numberBanks; col++) {
     ((r, c) => {
       const classname = classnames("PatchList-patchname", {
-        "PatchList-currentPatch": col === curBank && rowIdx === curPatch,
-        "PatchList-factoryPath": col < G.userBankStartIndex,
-        "PatchList-userPath": col >= G.userBankStartIndex
+        "PatchList-copiedPatch": col === copiedBank && rowIdx === copiedProgramNumber,
+        "PatchList-currentPatch": col === curBank && rowIdx === curProgramNumber,
+        "PatchList-factoryPatch": col < G.userBankStartIndex,
+        "PatchList-userPatch": col >= G.userBankStartIndex
       });
       cols.push(
         <input
@@ -71,7 +79,7 @@ const renderCols = (props, rowIdx) => {
           type="text"
           name="PatchList-patchname"
           id={PatchUtils.idWithPatch(col, rowIdx)}
-          checked={State.get("bank") === c && State.get("patch") === r}
+          checked={State.get("bank") === c && State.get("programNumber") === r}
           onClick={e => handleCellClick(c, r)}
           onChange={e => (e.target.value = getPatch(c, r).patchname || "")}
           onKeyDown={e => handleCellKeyDown(e, c, r)}
@@ -116,7 +124,7 @@ const renderColsHeadings = props => {
 const renderRows = props => {
   let rows = [];
 
-  for (let row = 0; row < G.numberPatchesPerBank; row++) {
+  for (let row = 0; row < G.numberProgramsPerBank; row++) {
     rows.push(renderCols(props, row));
   }
 
@@ -137,8 +145,8 @@ const PatchList = props => (
       <thead>
         <tr>
           <th />
-          <th colspan="4">Factory</th>
-          <th colspan="4">User</th>
+          <th class="PatchList-tableHeader" colSpan={G.numberBanks/2}>Factory</th>
+          <th class="PatchList-tableHeader" colSpan={G.numberBanks/2}>User</th>
         </tr>
         {renderColsHeadings(props)}
       </thead>

@@ -18,7 +18,7 @@ class App extends Component {
     State.setOnChange(this.onChange.bind(this));
 
     State.set("bank", 0);
-    State.set("patch", 0);
+    State.set("programNumber", 0);
 
     PatchUtils.clearAllPatches();
   }
@@ -29,7 +29,7 @@ class App extends Component {
 
   renderInstructions() {
     return PatchUtils.getVersion()
-      ? "Click a cell to select, press C to copy, press W (or V) to write."
+      ? "Click a cell to select, press C to copy, press W (or V) to write, press S to swap last copied cell."
       : "Paste patches JSON above and click Load Patches From JSON";
   }
 

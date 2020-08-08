@@ -6,19 +6,34 @@
   font-family: sans-serif;
 }
 
+/* Note has to be earlier in CSS file */
+.PatchList-patchname {
+  border: 0;
+  border-radius: 3px;
+  margin: 0;
+  font-family: sans-serif;
+  background: #555;
+  color: #fff;
+  padding: 2px 4px;
+}
+
+/* Note has to be earlier in CSS file */
+.PatchList-userPatch {
+  background: #777;
+}
+
 .PatchList-col-heading {
   font-size: 0.75rem;
 }
 
-.PatchList-currentPatch {
-  background: #ff0;
+.PatchList-copiedPatch {
+  background: #fc0;
+  color: #000;
 }
 
-.PatchList-patchname {
-  border: 1px solid #aaa;
-  border-radius: 3px;
-  margin: 0;
-  font-family: sans-serif;
+.PatchList-currentPatch {
+  background: #ff0;
+  color: #000;
 }
 
 .PatchList-row-heading {
@@ -29,6 +44,9 @@
   padding: 0 260px 0 20px;
 }
 
-.PatchList-userPath {
-  border-style: dotted;
+.PatchList-tableHeader {
+  padding: 0.5rem;
+  border-spacing: 1rem 0;
+  background-color: #555;
+  border-radius: 0.5rem;
 }

@@ -8,7 +8,8 @@
   right: 0px;
   width: 200px;
   padding: 0 1rem;
-  background: #eee;
+  background-color: #ccc;
+  color: #000;
   margin-left: 2%;
   overflow: auto;
 }
@@ -23,6 +24,7 @@
   font-weight: bold;
   font-family: sans-serif;
   height: 1.5rem;
+  margin: 0.1rem;
 }
 
 .PatchEditor-cell {

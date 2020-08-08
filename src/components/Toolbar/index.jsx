@@ -21,9 +21,9 @@ const handleBankKeyDown = e => {
 const handlePatchKeyDown = e => {
   const keycode = Util.key(e);
   if (Util.isArrowUp(keycode)) {
-    PatchUtils.setPatch(PatchUtils.getPatch() + 1);
+    PatchUtils.setPatch(PatchUtils.getProgramNumber() + 1);
   } else if (Util.isArrowDown(keycode)) {
-    PatchUtils.setPatch(PatchUtils.getPatch() - 1);
+    PatchUtils.setPatch(PatchUtils.getProgramNumber() - 1);
   }
 };
 
@@ -58,7 +58,7 @@ const handleLoadPatches = () => {
   }
 };
 
-const renderBankAndPatchButtons = () =>
+const renderBankAndProgramButtons = () =>
   PatchUtils.getVersion()
     ? [
         <span className="Toolbar-label" key="Toolbar-bank">
@@ -74,14 +74,14 @@ const renderBankAndPatchButtons = () =>
           onKeyDown={handleBankKeyDown}
         />,
         <span className="Toolbar-label" key="Toolbar-patch">
-          Patch
+          Program
         </span>,
         <input
           key="Toolbar-patch-field"
           className="Toolbar-field"
-          name="patch"
+          name="programNumber"
           type="text"
-          value={PatchUtils.getPatch()}
+          value={PatchUtils.getProgramNumber()}
           onChange={e => PatchUtils.setPatch(e.target.value)}
           onKeyDown={handlePatchKeyDown}
         />
@@ -101,7 +101,7 @@ const renderExportPatchesButtons = () =>
         <button
           className="Toolbar-button"
           onClick={() => handleExportPatches(1)}
-          key="export1"
+          key="export2"
         >
           Export User Banks 8-15 JSON
         </button>
@@ -121,7 +121,7 @@ const Toolbar = props => (
       </span>
     </div>
     <div className="Toolbar-controls">
-      {renderBankAndPatchButtons()}
+      {renderBankAndProgramButtons()}
       {renderExportPatchesButtons()}
       &nbsp;
       <button className="Toolbar-button" onClick={handleLoadPatches}>
