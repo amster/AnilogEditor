@@ -10,6 +10,7 @@ import "./index.css";
 
 const editPatchname = () => {
   const patchObject = PatchUtils.getCurrentPatch();
+  if (!patchObject) { return; }
   let newName = prompt("New patchname", patchObject.patchname);
   if (newName === null) return;
 

@@ -107,17 +107,17 @@ PatchUtils.setBank = bank =>
 
 PatchUtils.setCurrentPatch = patchObject => {
   const bank = PatchUtils.getBank();
-  const patch = PatchUtils.getProgramNumber();
+  const programNumber = PatchUtils.getProgramNumber();
   State.set(
-    PatchUtils.idWithPatch(bank, patch),
-    Object.assign({}, patchObject, { program: patch, bank: bank })
+    PatchUtils.idWithPatch(bank, programNumber),
+    Object.assign({}, patchObject, { program: programNumber, bank: bank })
   );
 };
 
-PatchUtils.setPatch = patch =>
+PatchUtils.setProgramNumber = programNumber =>
   State.set(
     "programNumber",
-    Math.min(Math.max(parseInt(patch, 10) || 0, 0), G.numberProgramsPerBank - 1)
+    Math.min(Math.max(parseInt(programNumber, 10) || 0, 0), G.numberProgramsPerBank - 1)
   );
 
 PatchUtils.setPatchWithJson = patchJson => {
@@ -151,8 +151,10 @@ PatchUtils.storeCurrentPatch = () => {
 };
 
 PatchUtils.swapStoredPatch = () => {
-  const bank = PatchUtils.getBank();
-  const programNumber = PatchUtils.getProgramNumber();
+  const currentPatch = PatchUtils.getCurrentPatch();
+  const bank = currentPatch ? currentPatch['bank'] : -1;
+  const programNumber = currentPatch ? currentPatch['program'] : -1;
+
   const copiedPatch = State.get("currentPatch");
   const copiedBank = copiedPatch ? copiedPatch['bank'] : -1;
   const copiedProgramNumber = copiedPatch ? copiedPatch['program'] : -1;
@@ -171,17 +173,17 @@ PatchUtils.swapStoredPatch = () => {
     return;
   }
 
-  console.log(`swapStoredPatch: --- 1: ${copiedBank}.${copiedProgramNumber} <=> ${bank}.${programNumber}`);
+  currentPatch['bank'] = copiedBank;
+  currentPatch['program'] = copiedProgramNumber;
+  PatchUtils.setPatchWithJson(currentPatch);
 
-  // State.set("currentPatch", patchObject);
-  //   Alert.flash("Stored current patch");
-  //   window._patchObject = patchObject;
-  //   console.log("See window._patchObject:");
-  //   console.log(JSON.stringify(window._patchObject));
-  //   return true;
-  // } else {
-  //   return false;
-  // }
+  copiedPatch['bank'] = bank;
+  copiedPatch['program'] = programNumber;
+  PatchUtils.setPatchWithJson(copiedPatch);
+
+  State.set("currentPatch", currentPatch);
+
+  Alert.flash(`Swapped patches ${copiedBank}.${copiedProgramNumber} <=> ${bank}.${programNumber}`);
 };
 
 export default PatchUtils;

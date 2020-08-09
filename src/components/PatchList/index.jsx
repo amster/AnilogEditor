@@ -30,9 +30,9 @@ const handleCellKeyDown = (e, bank, programNumber) => {
   } else if (Util.isArrowRight(keycode)) {
     PatchUtils.setBank(PatchUtils.getBank() + 1);
   } else if (Util.isArrowUp(keycode)) {
-    PatchUtils.setPatch(PatchUtils.getProgramNumber() - 1);
+    PatchUtils.setProgramNumber(PatchUtils.getProgramNumber() - 1);
   } else if (Util.isArrowDown(keycode)) {
-    PatchUtils.setPatch(PatchUtils.getProgramNumber() + 1);
+    PatchUtils.setProgramNumber(PatchUtils.getProgramNumber() + 1);
   } else if (Util.isKey(keycode, "c")) {
     PatchUtils.storeCurrentPatch();
   } else if (Util.isKey(keycode, "s")) {
@@ -62,8 +62,6 @@ const renderCols = (props, rowIdx) => {
   const copiedBank = copiedPatch ? copiedPatch['bank'] : -1;
   const copiedProgramNumber = copiedPatch ? copiedPatch['program'] : -1;
 
-  console.log(`renderCols: ${copiedBank}.${copiedProgramNumber}`);
-
   let cols = [];
   for (let col = 0; col < G.numberBanks; col++) {
     ((r, c) => {
@@ -81,9 +79,10 @@ const renderCols = (props, rowIdx) => {
           id={PatchUtils.idWithPatch(col, rowIdx)}
           checked={State.get("bank") === c && State.get("programNumber") === r}
           onClick={e => handleCellClick(c, r)}
-          onChange={e => (e.target.value = getPatch(c, r).patchname || "")}
-          onKeyDown={e => handleCellKeyDown(e, c, r)}
+          onChange={e => {return}}
+          onKeyDown={e => {handleCellKeyDown(e, c, r)}}
           value={getPatch(c, r).patchname}
+          readOnly={true}
         />
       );
     })(rowIdx, col);
@@ -145,8 +144,8 @@ const PatchList = props => (
       <thead>
         <tr>
           <th />
-          <th class="PatchList-tableHeader" colSpan={G.numberBanks/2}>Factory</th>
-          <th class="PatchList-tableHeader" colSpan={G.numberBanks/2}>User</th>
+          <th className="PatchList-tableHeader" colSpan={G.numberBanks/2}>Factory</th>
+          <th className="PatchList-tableHeader" colSpan={G.numberBanks/2}>User</th>
         </tr>
         {renderColsHeadings(props)}
       </thead>

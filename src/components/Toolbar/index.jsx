@@ -21,9 +21,9 @@ const handleBankKeyDown = e => {
 const handlePatchKeyDown = e => {
   const keycode = Util.key(e);
   if (Util.isArrowUp(keycode)) {
-    PatchUtils.setPatch(PatchUtils.getProgramNumber() + 1);
+    PatchUtils.setProgramNumber(PatchUtils.getProgramNumber() + 1);
   } else if (Util.isArrowDown(keycode)) {
-    PatchUtils.setPatch(PatchUtils.getProgramNumber() - 1);
+    PatchUtils.setProgramNumber(PatchUtils.getProgramNumber() - 1);
   }
 };
 
@@ -82,7 +82,7 @@ const renderBankAndProgramButtons = () =>
           name="programNumber"
           type="text"
           value={PatchUtils.getProgramNumber()}
-          onChange={e => PatchUtils.setPatch(e.target.value)}
+          onChange={e => PatchUtils.setProgramNumber(e.target.value)}
           onKeyDown={handlePatchKeyDown}
         />
       ]
