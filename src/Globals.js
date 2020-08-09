@@ -1,4 +1,4 @@
-// Copyright (c) 2018 by Sequence Mediaworks
+// Copyright (c) 2018-2020 by Sequence Mediaworks
 // Licensed under GPLv3
 
 const Globals = {
