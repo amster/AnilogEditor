@@ -114,7 +114,7 @@ const Toolbar = props => (
       <img
         className="Toolbar-logo"
         src="/logo-128.png"
-        alt="Anilog Editor logo"
+        alt="ANILOG Editor logo"
       />
       <span className="Toolbar-title-label" title="ANILOG Editor">
         Editor

@@ -20,7 +20,7 @@ PatchUtils.didLoadPatches = () => State.get("patchesversion") > 0;
 
 PatchUtils.exportJsonFromState = isUser => {
   let result = {
-    editor: "Anilog Editor",
+    editor: "ANILOG Editor",
     date: new Date().toString(),
     version: State.get("patchesversion"),
     patches: []
