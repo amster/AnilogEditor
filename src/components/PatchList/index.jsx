@@ -22,6 +22,10 @@ const handleCellClick = (bank, programNumber) => {
   State.set("programNumber", programNumber);
 };
 
+const handleCellDoubleClick = (bank, programNumber) => {
+  PatchEditor.editPatchname();
+};
+
 const handleCellKeyDown = (e, bank, programNumber) => {
   const keycode = Util.key(e);
 
@@ -79,6 +83,7 @@ const renderCols = (props, rowIdx) => {
           id={PatchUtils.idWithPatch(col, rowIdx)}
           checked={State.get("bank") === c && State.get("programNumber") === r}
           onClick={e => handleCellClick(c, r)}
+          onDoubleClick={e => handleCellDoubleClick(c, r)}
           onChange={e => {return}}
           onKeyDown={e => {handleCellKeyDown(e, c, r)}}
           value={getPatch(c, r).patchname}
