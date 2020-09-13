@@ -4,8 +4,52 @@
 import Alert from "./components/Alert/index";
 import G from "./Globals";
 import State from "./State";
+import Globals from "./Globals";
 
 let PatchUtils = {};
+
+PatchUtils.adjustOctave = () => {
+  let tuningAdjustment = -12.0;
+
+  for (var bank=0; bank<Globals.numberBanks; bank++) {
+    for (var programNumber=0; programNumber<Globals.numberProgramsPerBank; programNumber++) {
+      let patchId = PatchUtils.idWithPatch(bank, programNumber);
+      let patch = State.get(patchId);
+      if (patch && patch.patchname
+          && !patch.patchname.match(/\^/)
+          && !patch.patchname.match(/\[kick\]/i)
+          && !patch.patchname.match(/\[snare\]/i)
+          && !patch.patchname.match(/\[hats\]/i)
+          && !patch.patchname.match(/\[skins\]/i)
+          && !patch.patchname.match(/\[perc\]/i)
+          && !patch.patchname.match(/\[metal\]/i)
+          && !patch.patchname.match(/\[fx\]/i)
+          && !patch.patchname.match(/\[basic\]/i)
+          ) {
+        patch.patchname = patch.patchname + "^";
+        console.log(`--- ${bank}.${programNumber}: ${patch.patchname}`);
+        var before = [];
+        var after = [];
+        ['o1', 'o2', 'o3'].forEach(oscillator => { // eslint-disable-line no-loop-func
+          before.push(`${oscillator}=${patch[oscillator].tu || '-'}`);
+          patch[oscillator].tu = (patch[oscillator].tu || 0) + tuningAdjustment;
+          after.push(`${oscillator}=${patch[oscillator].tu}`);
+        });
+        if (patch.fl < 0) {
+          patch.fl *= 2;
+          if (patch.fl > 2) {
+            console.log('!!! WARNING: FL too long', patch.fl);
+          }
+        }
+        State.set(patchId, patch);
+      }
+    }
+  }
+
+  if (State.onChange) {
+    State.onChange(0, 0);
+  }
+}
 
 PatchUtils.clearAllPatches = () => {
   for (let bank = 0; bank < G.numberBanks; bank++) {
@@ -185,5 +229,9 @@ PatchUtils.swapStoredPatch = () => {
 
   Alert.flash(`Swapped patches ${copiedBank}.${copiedProgramNumber} <=> ${bank}.${programNumber}`);
 };
+
+window.PatchUtils = {
+  adjustOctave: PatchUtils.adjustOctave
+}
 
 export default PatchUtils;
